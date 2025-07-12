@@ -44,6 +44,8 @@ def home():
 def process():
     email = request.form["email"]
     tone = request.form["tone"]
+    role = request.form["role"]
+
 
     summary_prompt = (
         f"You are an assistant that summarizes professional emails.\n\n"
@@ -52,10 +54,11 @@ def process():
     )
 
     reply_prompt = (
-        f"You are an assistant that writes {tone.lower()} replies to emails.\n\n"
+        f"You are replying as a {role} and should write in a {tone.lower()} tone.\n\n"
         f"Original Email:\n{email}\n\n"
-        f"Write a complete reply to this email in a {tone.lower()} tone:"
+        f"Write a complete reply to this email:"
     )
+
 
 
     summary = query_mistral(summary_prompt)

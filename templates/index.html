@@ -1,34 +1,124 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Email Assistant</title>
+  <meta charset="UTF-8">
+  <title>Email Assistant - Summarizer & Reply Generator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f6f8;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 60px auto;
+      background-color: #ffffff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin: 16px 0 6px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    textarea, select, input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      resize: vertical;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+
+    button {
+      margin-top: 20px;
+      background-color: #007BFF;
+      color: #fff;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #results {
+      margin-top: 40px;
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    #results h3 {
+      margin-bottom: 8px;
+      color: #444;
+    }
+
+    #results p {
+      margin-top: 0;
+      line-height: 1.5;
+      color: #333;
+    }
+  </style>
 </head>
 <body>
-  <h2>Email Summarizer + Reply Suggester</h2>
-  <form id="email-form">
-    <textarea name="email" rows="10" cols="60" placeholder="Paste your email here..." required></textarea><br>
-    <label for="tone">Reply Tone:</label>
-    <select name="tone">
-      <option value="formal">Formal</option>
-      <option value="casual">Casual</option>
-      <option value="assertive">Assertive</option>
-    </select><br><br>
-    <button type="submit">Submit</button>
-  </form>
-  <hr>
-  <div id="results"></div>
+  <div class="container">
+    <h2>📬 Email Summarizer + Reply Generator</h2>
+    <form id="email-form">
+      <label for="email">Paste your email:</label>
+      <textarea name="email" rows="8" placeholder="Enter email content here..." required></textarea>
+
+      <label for="tone">Reply tone:</label>
+      <select name="tone" id="tone">
+        <option value="formal">Formal</option>
+        <option value="casual">Casual</option>
+        <option value="assertive">Assertive</option>
+      </select>
+
+      <label for="role">Replying as (e.g., Student, Manager, etc.):</label>
+      <input type="text" name="role" id="role" placeholder="e.g., Student, Team Lead" required>
+
+      <button type="submit">Submit</button>
+    </form>
+
+    <div id="results"></div>
+  </div>
 
   <script>
-    document.getElementById('email-form').addEventListener('submit', async function(e) {
+    document.getElementById('email-form').addEventListener('submit', async function (e) {
       e.preventDefault();
       const formData = new FormData(e.target);
+
       const response = await fetch('/process', {
         method: 'POST',
         body: formData
       });
+
       const data = await response.json();
-      document.getElementById('results').innerHTML =
-        `<h3>Summary:</h3><p>${data.summary}</p><h3>Suggested Reply:</h3><p>${data.reply}</p>`;
+      document.getElementById('results').innerHTML = `
+        <h3>📝 Summary:</h3>
+        <p>${data.summary}</p>
+        <h3>✉️ Suggested Reply:</h3>
+        <p>${data.reply}</p>
+      `;
     });
   </script>
 </body>
