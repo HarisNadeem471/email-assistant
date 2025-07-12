@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Email Assistant</title>
+</head>
+<body>
+  <h2>Email Summarizer + Reply Suggester</h2>
+  <form id="email-form">
+    <textarea name="email" rows="10" cols="60" placeholder="Paste your email here..." required></textarea><br>
+    <label for="tone">Reply Tone:</label>
+    <select name="tone">
+      <option value="formal">Formal</option>
+      <option value="casual">Casual</option>
+      <option value="assertive">Assertive</option>
+    </select><br><br>
+    <button type="submit">Submit</button>
+  </form>
+  <hr>
+  <div id="results"></div>
+
+  <script>
+    document.getElementById('email-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const response = await fetch('/process', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await response.json();
+      document.getElementById('results').innerHTML =
+        `<h3>Summary:</h3><p>${data.summary}</p><h3>Suggested Reply:</h3><p>${data.reply}</p>`;
+    });
+  </script>
+</body>
+</html>
